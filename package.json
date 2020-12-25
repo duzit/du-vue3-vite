@@ -1,0 +1,18 @@
+{
+  "name": "du-vue3",
+  "version": "0.0.0",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite"
+  },
+  "dependencies": {
+    "element-plus": "^1.0.1-alpha.19",
+    "vue": "^3.0.4"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-typescript": "^4.5.9",
+    "@vue/compiler-sfc": "^3.0.4",
+    "vite": "^1.0.0-rc.13",
+    "vue-cli-plugin-element-plus": "0.0.8"
+  }
+}

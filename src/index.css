@@ -1,0 +1,42 @@
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  /* margin-top: 60px; */
+  padding: 40px;
+}
+
+
+.flex-align-center {
+  display: flex;
+  align-items: center;
+}
+
+.flex-justify-content {
+  display: flex;
+  justify-content: center;
+}
+
+.mr10 {
+  margin-right: 10px;
+}
+.mr20 {
+  margin-right: 20px;
+}
+
+.ml10 {
+  margin-left: 10px !important;
+}
+.ml20 {
+  margin-left: 20px !important;
+}
+
+.mt10 {
+  margin-top: 10px;
+}
+.mt20 {
+  margin-top: 20px;
+}
+
