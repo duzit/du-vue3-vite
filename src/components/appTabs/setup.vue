@@ -1,5 +1,11 @@
 <template>
   <div class="setup" ref="refSetup">
+    <h3>setup</h3>
+    <p>props: {{ props.propsObj }}</p>
+    <p>使用toRefs解构后的title：{{ title }}</p>
+    <p>context.attrs.foo: {{ attrsFoo }}</p>
+    <el-button @click="changeAttrs">change attrs</el-button>
+    
     <h3>computed</h3>
     <p>computed: {{ readonlyComputed }}</p>
     <p>
@@ -14,6 +20,17 @@
     <h3>watchEffect</h3>
     <p>{{ effectValue }}</p>
     <el-button @click="changeEffect">watchEffect ref</el-button>
+
+    <h3>父子组件通信</h3>
+    <el-button class="mt20" @click="clickByRef">父组件调用子组件方法</el-button>
+    <ref-test-com ref="refTestCom" @callback="childCallback"></ref-test-com>
+
+    <h3>readonly</h3>
+    <p>{{ onlyReactive.num }}</p>
+    <el-button @click="addOrg">addOrg</el-button>
+    <p>{{ copyReadonly.num }}</p>
+    <el-button @click="addReadonly">addReadonly</el-button>
+
   </div>
 </template>
 
@@ -25,13 +42,51 @@ import {
   watch,
   reactive,
   watchEffect,
-  onMounted
+  onMounted,
+  readonly,
+  toRefs
 } from 'vue';
 import { ElMessage } from 'element-plus';
+import refTestCom from '../refTestCom.vue';
+
 export default defineComponent({
   name: 'setup',
-  setup(props) {
+  components: {
+    refTestCom
+  },
+  props: {
+    propsObj: {
+      type: Object,
+      default: () => {}
+    }
+  },
+  setup(props, context) {
+    // 需在 props 中 引入传入的props 这里需要指定对应的属性propsObj
+    /**
+     * props 是响应式的 不能使用es6结构 会消除响应性
+     * 解决方法：使用 toRefs 
+     */
+    console.log(props.propsObj, 'setup props');
+    const { title } = toRefs(props.propsObj);
+
+    /**
+     * context
+     * 普通js对象 可以使用解构 setup(props, { attrs, slots, emit })
+     * 暴露三个组件的属性
+     * context.attrs 非响应式对象 
+     * context.slots 非响应式对象 
+     * context.emit 方法
+     * 
+     * 
+     */
+    let attrsFoo = context.attrs.foo;
+    console.log(context.attrs.foo, 'attrs'); // foo
+    console.log(context.slots, 'slots');
+
+
     const refSetup = ref(null);
+    const refTestCom = ref(null);
+
     onMounted(() => {
       // 获取 DOM
       console.log(refSetup.value, 'ref');
@@ -125,6 +180,35 @@ export default defineComponent({
       effectValue.value++;
     }
 
+    // 调用子组件方法
+    function clickByRef() {
+      refTestCom.value.showMessage();
+    }
+
+    const childCallback = (param) => {
+      ElMessage.success(`child msg: ${param}`);
+    }
+
+    // readonly
+    const onlyReactive = reactive({
+      num: 1
+    });
+    const copyReadonly = readonly(onlyReactive);
+
+    const addOrg = () => {
+      // 生效且是响应式的 会触发视图更新 且会影响 copyReadonly
+      onlyReactive.num++;
+    }
+    const addReadonly = () => {
+      // 不生效 且会有告警 Set operation on key "num" failed: target is readonly.
+      copyReadonly.num++;
+    }
+
+    const changeAttrs = () => {
+      // 这样是无效的
+      context.emit('callback', 'foo setup')
+    }
+
     return {
       refSetup,
       readonlyComputed,
@@ -135,7 +219,18 @@ export default defineComponent({
       reactiveWatch,
       addAge,
       effectValue,
-      changeEffect
+      changeEffect,
+      clickByRef,
+      refTestCom,
+      childCallback,
+      onlyReactive,
+      copyReadonly,
+      addOrg,
+      addReadonly,
+      props,
+      title,
+      attrsFoo,
+      changeAttrs
     }
   }
 })

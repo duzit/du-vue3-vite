@@ -8,7 +8,12 @@
         :key="index">
       </el-tab-pane>
     </el-tabs>
-    <component :is='activeTab'></component>
+    <component 
+      :is='activeTab' 
+      :props-obj="propsObj" 
+      :foo="foo"
+      @callback="callback">
+    </component>
   </div>
 </template>
 
@@ -24,19 +29,27 @@ import {
 import setupTab from './components/appTabs/setup.vue';
 import reactiveTab from './components/appTabs/reactive.vue';
 import refTab from './components/appTabs/ref.vue';
+import globalConfig from './components/appTabs/globalConfig.vue';
 
 export default defineComponent({
   name: 'App',
   components: {
     setupTab,
     reactiveTab,
-    refTab
+    refTab,
+    globalConfig
   },
   created() {
     // console.log(ele, 'created');
   },
   setup(props) {
-    console.log(props, 'props');
+    const propsObj = {
+      title: 'hello',
+      name: 'li',
+      age: 12
+    }
+
+    let foo = ref('foo app');
 
     let ele = document.getElementById('main');
     console.log(ele, 'setup'); // null
@@ -63,6 +76,10 @@ export default defineComponent({
       {
         name: 'refTab',
         label: 'Ref'
+      },
+      {
+        name: 'globalConfig',
+        label: '全局配置'
       }
     ]);
 
@@ -72,10 +89,17 @@ export default defineComponent({
       console.log(activeTab.value, 'cb v');
     }
 
+    const callback = (param) => {
+      foo = param;
+    }
+
     return {
       tabs,
       activeTab,
-      handleClick
+      handleClick,
+      propsObj,
+      foo,
+      callback
     }
   }
 })
