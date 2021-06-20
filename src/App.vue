@@ -12,6 +12,7 @@
       :is='activeTab' 
       :props-obj="propsObj" 
       :foo="foo"
+      class="component"
       @callback="callback">
     </component>
   </div>

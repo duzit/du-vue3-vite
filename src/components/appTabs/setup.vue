@@ -73,16 +73,15 @@ export default defineComponent({
      * context
      * 普通js对象 可以使用解构 setup(props, { attrs, slots, emit })
      * 暴露三个组件的属性
-     * context.attrs 非响应式对象 
+     * context.attrs 非响应式对象 支持class style
      * context.slots 非响应式对象 
      * context.emit 方法
      * 
-     * 
      */
     let attrsFoo = context.attrs.foo;
-    console.log(context.attrs.foo, 'attrs'); // foo
+    console.log(context.attrs, 'attrs'); // foo
+    console.log(context.attrs.class, 'attrs class'); // foo
     console.log(context.slots, 'slots');
-
 
     const refSetup = ref(null);
     const refTestCom = ref(null);
