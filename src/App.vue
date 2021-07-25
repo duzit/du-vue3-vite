@@ -15,6 +15,8 @@
       class="component"
       @callback="callback">
     </component>
+
+    <router-view></router-view>
   </div>
 </template>
 

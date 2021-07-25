@@ -31,6 +31,7 @@
     <p>{{ copyReadonly.num }}</p>
     <el-button @click="addReadonly">addReadonly</el-button>
 
+    <el-button @click="goHome">go Home</el-button>
   </div>
 </template>
 
@@ -48,6 +49,7 @@ import {
 } from 'vue';
 import { ElMessage } from 'element-plus';
 import refTestCom from '../refTestCom.vue';
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'setup',
@@ -68,6 +70,8 @@ export default defineComponent({
      */
     console.log(props.propsObj, 'setup props');
     const { title } = toRefs(props.propsObj);
+
+    const router = useRouter()
 
     /**
      * context
@@ -208,6 +212,12 @@ export default defineComponent({
       context.emit('callback', 'foo setup')
     }
 
+    const goHome = () => {
+      router.push({
+        path: 'home'
+      })
+    }
+
     return {
       refSetup,
       readonlyComputed,
@@ -229,7 +239,8 @@ export default defineComponent({
       props,
       title,
       attrsFoo,
-      changeAttrs
+      changeAttrs,
+      goHome
     }
   }
 })
