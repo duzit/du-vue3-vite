@@ -5,7 +5,7 @@ import {
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
     name: 'home',
     component: () => 
       import('../views/home.vue') 
@@ -15,6 +15,19 @@ const routes = [
     name: 'Setup',
     component: () => 
       import('../views/setup.vue')
+  },
+  {
+    path: '/',
+    name: 'dashborad',
+    component: () => 
+      import('../views/dashborad.vue'),
+    children: [
+      {
+        path: 'ref',
+        component: () => 
+          import('../views/menu/ref.vue')
+      }
+    ]
   }
 ];
 

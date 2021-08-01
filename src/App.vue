@@ -1,6 +1,6 @@
 <template>
   <div id="main">
-    <el-tabs v-model="activeTab" @tab-click="handleClick">
+    <!-- <el-tabs v-model="activeTab" @tab-click="handleClick">
       <el-tab-pane 
         :label="tab.label"
         :name="tab.name"
@@ -14,7 +14,7 @@
       :foo="foo"
       class="component"
       @callback="callback">
-    </component>
+    </component> -->
 
     <router-view></router-view>
   </div>
@@ -28,6 +28,7 @@ import {
   onBeforeMount,
   onMounted
 } from 'vue';
+import { useRouter } from 'vue-router'
 
 import setupTab from './components/appTabs/setup.vue';
 import reactiveTab from './components/appTabs/reactive.vue';
@@ -51,6 +52,8 @@ export default defineComponent({
       name: 'li',
       age: 12
     }
+
+    const route = useRouter();
 
     let foo = ref('foo app');
 
@@ -96,14 +99,25 @@ export default defineComponent({
       foo = param;
     }
 
+    const start = () => {
+      route.push('/dashborad')
+    }
+
     return {
       tabs,
       activeTab,
       handleClick,
       propsObj,
       foo,
-      callback
+      callback,
+      start
     }
   }
 })
 </script>
+
+<style scoped>
+  #main {
+    height: 100vh;
+  }
+</style>
